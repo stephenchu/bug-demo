@@ -1,0 +1,6 @@
+#! /bin/bash
+
+set -euo pipefail
+
+trap "rm .terraform/tf.plan" EXIT
+terraform apply .terraform/tf.plan
