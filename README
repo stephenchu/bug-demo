@@ -1,12 +1,17 @@
 Steps
 ====================
 
+
 ```
 schu@master % aws s3 ls --recursive s3://schu.eu-west-1.terraform-remote-state/
 schu@master % git status
 On branch master
 Your branch is up-to-date with 'origin/master'.
 nothing to commit, working directory clean
+```
+
+Run `./plan`, which will init:
+```
 schu@master % ./plan
 Initializing the backend...
 
@@ -58,6 +63,7 @@ Path: .terraform/tf.plan
 
 
 Plan: 1 to add, 0 to change, 0 to destroy.
+
 schu@master ?:1 % git status
 On branch master
 Your branch is up-to-date with 'origin/master'.
@@ -73,6 +79,10 @@ drwxr-xr-x 2 admin admin 4.0K Mar 17 18:33 ./
 drwxr-xr-x 4 admin admin 4.0K Mar 17 18:33 ../
 -rw-r--r-- 1 admin admin  526 Mar 17 18:33 terraform.tfstate
 -rw-r--r-- 1 admin admin 4.1K Mar 17 18:33 tf.plan
+```
+
+`./apply` it:
+```
 schu@master ?:1 % ./apply
 aws_vpc.vpc: Creating...
   assign_generated_ipv6_cidr_block: "" => "false"
