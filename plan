@@ -11,5 +11,4 @@ terraform plan \
   -input=false \
   -out=.terraform/tf.plan \
   -module-depth=-1 \
-  -var region=eu-west-1 \
-  -var s3_terraform_remote_state_bucket=schu.eu-west-1.terraform-remote-state
+  -var region=eu-west-1
