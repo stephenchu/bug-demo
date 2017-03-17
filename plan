@@ -11,4 +11,5 @@ terraform plan \
   -input=false \
   -out=.terraform/tf.plan \
   -module-depth=-1 \
-  -var region=eu-west-1
+  -var region=eu-west-1 \
+  $@
