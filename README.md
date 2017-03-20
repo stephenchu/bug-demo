@@ -1,16 +1,13 @@
 Steps
 ====================
 
-
+Terraform version:
 ```
-schu@master % aws s3 ls --recursive s3://schu.eu-west-1.terraform-remote-state/
-schu@master % git status
-On branch master
-Your branch is up-to-date with 'origin/master'.
-nothing to commit, working directory clean
+schu@master % terraform --version
+Terraform v0.9.1
 ```
 
-Run `./plan`, which will init:
+First time plan then apply:
 ```
 schu@master % ./plan
 Initializing the backend...
@@ -63,27 +60,7 @@ Path: .terraform/tf.plan
 
 
 Plan: 1 to add, 0 to change, 0 to destroy.
-
-schu@master ?:1 % git status
-On branch master
-Your branch is up-to-date with 'origin/master'.
-Untracked files:
-  (use "git add <file>..." to include in what will be committed)
-
-        .terraform/
-
-nothing added to commit but untracked files present (use "git add" to track)
-schu@master ?:1 % ll .terraform
-total 20K
-drwxr-xr-x 2 admin admin 4.0K Mar 17 18:33 ./
-drwxr-xr-x 4 admin admin 4.0K Mar 17 18:33 ../
--rw-r--r-- 1 admin admin  526 Mar 17 18:33 terraform.tfstate
--rw-r--r-- 1 admin admin 4.1K Mar 17 18:33 tf.plan
-```
-
-`./apply` it:
-```
-schu@master ?:1 % ./apply
+schu@master % ./apply
 aws_vpc.vpc: Creating...
   assign_generated_ipv6_cidr_block: "" => "false"
   cidr_block:                       "" => "10.0.0.0/16"
@@ -100,7 +77,7 @@ aws_vpc.vpc: Creating...
   main_route_table_id:              "" => "<computed>"
   tags.%:                           "" => "1"
   tags.Name:                        "" => "bug maybe"
-aws_vpc.vpc: Creation complete (ID: vpc-dd293eb9)
+aws_vpc.vpc: Creation complete (ID: vpc-eb68798f)
 
 Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
 
@@ -113,17 +90,50 @@ State path:
 
 Outputs:
 
-vpc_id = vpc-dd293eb9
-schu@master ?:2 % git status
-On branch master
-Your branch is up-to-date with 'origin/master'.
-Untracked files:
-  (use "git add <file>..." to include in what will be committed)
-
-        .terraform/
-        terraform.tfstate
-
-nothing added to commit but untracked files present (use "git add" to track)
-schu@master ?:2 % aws s3 ls --recursive s3://schu.eu-west-1.terraform-remote-state/
-schu@master ?:2 %
+vpc_id = vpc-eb68798f
 ```
+
+Have `.terraform/` folder:
+```
+schu@master % ls -al
+total 48
+drwxr-xr-x 4 admin admin 4096 Mar 20 17:33 ./
+drwxr-xr-x 4 admin admin 4096 Mar 17 18:16 ../
+-rwxr-xr-x 1 admin admin  102 Mar 17 18:29 apply*
+-rw-r--r-- 1 admin admin  114 Mar 17 18:19 backend_config
+drwxr-xr-x 8 admin admin 4096 Mar 20 17:32 .git/
+-rw-r--r-- 1 admin admin   21 Mar 17 18:46 inputs.tf
+-rw-r--r-- 1 admin admin  174 Mar 17 18:46 main.tf
+-rw-r--r-- 1 admin admin   66 Mar 17 18:18 outputs.tf
+-rwxr-xr-x 1 admin admin  230 Mar 17 23:22 plan*
+-rw-r--r-- 1 admin admin 4581 Mar 17 18:42 README.md
+drwxr-xr-x 2 admin admin 4096 Mar 20 17:33 .terraform/
+schu@master % ls -al .terraform
+total 12
+drwxr-xr-x 2 admin admin 4096 Mar 20 17:33 ./
+drwxr-xr-x 4 admin admin 4096 Mar 20 17:33 ../
+-rw-r--r-- 1 admin admin  526 Mar 20 17:33 terraform.tfstate
+```
+
+Now, attempting to destroy:
+```
+schu@master % ./plan -destroy
+Initializing the backend...
+Backend configuration changed!
+
+Terraform has detected that the configuration specified for the backend
+has changed. Terraform will now reconfigure for this backend. If you didn't
+intend to reconfigure your backend please undo any changes to the "backend"
+section in your Terraform configuration.
+
+
+Do you want to copy the state from "s3"?
+  Would you like to copy the state from your prior backend "s3" to the
+  newly configured "s3" backend? If you're reconfiguring the same backend,
+  answering "yes" or "no" shouldn't make a difference. Please answer exactly
+  "yes" or "no".
+
+  Enter a value:
+```
+
+I was not expecting to see any re-initialization options prompts.
