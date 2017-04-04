@@ -4,7 +4,7 @@ Steps
 Terraform version:
 ```
 schu@master % terraform --version
-Terraform v0.9.1
+Terraform v0.9.2
 ```
 
 First time plan then apply:
